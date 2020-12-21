@@ -15,14 +15,14 @@ import java.util.concurrent.ExecutionException;
 
 public class ContactViewModel extends AndroidViewModel {
 
-    private static ContactDB contactDB;
-    private LiveData<List<Contact>> contactsLiveData;
+     private static ContactDB contactDB;
+     private LiveData<List<Contact>> contactsLiveData;
 
 
     public ContactViewModel(@NonNull Application application) {
         super(application);
 
-        contactDB = ContactDB.getInstance(application);
+        contactDB = ContactDB.getInstance(getApplication());
         contactsLiveData = contactDB.contactDAO().getAllContacts();
     }
 
