@@ -11,11 +11,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.roomtest.DB.Contact;
 import com.example.roomtest.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactViewHolder> {
 
-    List<Contact> contactList;
+    private List<Contact> contactList;
+    public OnContactClickListener onContactClickListener;
+
+    public void setOnContactClickListener(OnContactClickListener onContactClickListener) {
+        this.onContactClickListener = onContactClickListener;
+    }
+
+    public interface OnContactClickListener {
+        void OnContactClick(int position);
+    }
 
     public List<Contact> getContactList() {
         return contactList;
@@ -31,12 +41,13 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
     }
 
     public ContactAdapter() {
+        contactList = new ArrayList<>();
     }
 
     @NonNull
     @Override
     public ContactViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.contact_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.contact_layout, parent, false);
 
         return new ContactViewHolder(view);
     }
@@ -48,12 +59,13 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         TextView lName = holder.lName;
         TextView email = holder.email;
         TextView number = holder.number;
+        TextView id = holder.id;
 
         fName.setText(contactList.get(position).getName());
         lName.setText(contactList.get(position).getLastName());
         email.setText(contactList.get(position).getEmail());
         number.setText(contactList.get(position).getNumber());
-
+        id.setText(contactList.get(position).getId()+"");
 
     }
 
@@ -63,7 +75,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
     }
 
     class ContactViewHolder extends RecyclerView.ViewHolder {
-        private TextView fName,lName, email, number;
+        private TextView fName, lName, email, number,id;
 
         public ContactViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -71,7 +83,18 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
             lName = itemView.findViewById(R.id.lastName);
             email = itemView.findViewById(R.id.email);
             number = itemView.findViewById(R.id.number);
+            id = itemView.findViewById(R.id.id);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (onContactClickListener != null) {
+                        onContactClickListener.OnContactClick(getAdapterPosition());
+                    }
+                }
+            });
         }
     }
+
 
 }

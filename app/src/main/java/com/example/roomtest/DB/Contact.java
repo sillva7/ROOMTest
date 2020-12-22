@@ -2,6 +2,7 @@ package com.example.roomtest.DB;
 
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "contacts")
@@ -18,6 +19,14 @@ public class Contact {
 
     public Contact(int id, String name, String lastName, String email, String number) {
         this.id = id;
+        this.name = name;
+        this.lastName = lastName;
+        this.email = email;
+        this.number = number;
+    }
+
+    @Ignore
+    public Contact(String name, String lastName, String email, String number) {
         this.name = name;
         this.lastName = lastName;
         this.email = email;

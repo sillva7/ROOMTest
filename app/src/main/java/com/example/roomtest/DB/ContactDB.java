@@ -7,7 +7,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 
-@Database(entities = {Contact.class}, version = 1, exportSchema = false)
+@Database(entities = {Contact.class}, version = 2, exportSchema = false)
 public abstract class ContactDB extends RoomDatabase {
 
     private static ContactDB database;
@@ -17,7 +17,9 @@ public abstract class ContactDB extends RoomDatabase {
     public static ContactDB getInstance(Context context){
         synchronized (LOCK){
             if (database == null) {
-                database = Room.databaseBuilder(context, ContactDB.class, DB_name).build();
+                database = Room.databaseBuilder(context, ContactDB.class, DB_name)
+                        .fallbackToDestructiveMigration()
+                        .build();
             }
             return database;
         }

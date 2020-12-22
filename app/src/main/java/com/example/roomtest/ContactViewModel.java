@@ -15,7 +15,7 @@ import java.util.concurrent.ExecutionException;
 
 public class ContactViewModel extends AndroidViewModel {
 
-     private static ContactDB contactDB;
+     static ContactDB contactDB;
      private LiveData<List<Contact>> contactsLiveData;
 
 
@@ -25,6 +25,8 @@ public class ContactViewModel extends AndroidViewModel {
         contactDB = ContactDB.getInstance(getApplication());
         contactsLiveData = contactDB.contactDAO().getAllContacts();
     }
+
+
 
     private static class insertContactAsyncTask extends AsyncTask<Contact, Void, Void> {
 //делаем для каждого метода из ДАО асинхронный класс, чтобы все его задачи(тяжелые для основного треда) выполнялись в бэкграунде
