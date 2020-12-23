@@ -10,14 +10,14 @@ public class Contact {
 
 
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private long id;
     private String name;
     private String lastName;
     private String email;
     private String number;
 
 
-    public Contact(int id, String name, String lastName, String email, String number) {
+    public Contact(long id, String name, String lastName, String email, String number) {
         this.id = id;
         this.name = name;
         this.lastName = lastName;
@@ -33,7 +33,7 @@ public class Contact {
         this.number = number;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

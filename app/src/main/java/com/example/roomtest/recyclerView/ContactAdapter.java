@@ -1,14 +1,19 @@
 package com.example.roomtest.recyclerView;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.roomtest.ContactViewModel;
 import com.example.roomtest.DB.Contact;
+import com.example.roomtest.MainActivity;
 import com.example.roomtest.R;
 
 import java.util.ArrayList;
@@ -93,6 +98,8 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
                     }
                 }
             });
+            //внизу удаление по свайпу
+
         }
     }
 

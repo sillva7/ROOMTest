@@ -1,9 +1,11 @@
 package com.example.roomtest;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,10 +29,11 @@ public class MainActivity extends AppCompatActivity {
 
     private ContactViewModel viewModel;
     private ContactAdapter adapter;
-    private RecyclerView recyclerView;
+    RecyclerView recyclerView;
     private FloatingActionButton fab;
     private final int ADD = 0;
     private final int EDIT = 1;
+    private final static String TAG = "454545";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,14 +59,32 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         recyclerView.setAdapter(adapter);
 
+
         adapter.setOnContactClickListener(new ContactAdapter.OnContactClickListener() {
             @Override
             public void OnContactClick(int position) {
                 addEditContact(1, adapter.getContactList().get(position));
-                Log.d("454545", "OnContactClick: "
-                        + ContactViewModel.contactDB.contactDAO().getContactById(adapter.getContactList().get(position).getId()));
+
             }
         });
+        Log.d(TAG, "onCreate: " + viewModel.getContactById(1));//test
+
+        ItemTouchHelper itemTouchHelper =new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                Contact contact = adapter.getContactList().get(viewHolder.getAdapterPosition());
+                adapter.getContactList().remove(viewHolder.getAdapterPosition());
+                viewModel.deleteContact(contact);
+
+            }
+        });
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
 
     }
 
@@ -99,6 +120,11 @@ public class MainActivity extends AppCompatActivity {
                     .setPositiveButton("Edit", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
+                            contact.setName(fName.getText().toString());
+                            contact.setLastName(lName.getText().toString());
+                            contact.setEmail(email.getText().toString());
+                            contact.setNumber(number.getText().toString());
+
                             viewModel.updateContact(contact);
                         }
                     });
